@@ -55,12 +55,22 @@ Route::middleware('checklogin')->group(function () {
     Route::put('/password/{id}', [AdmUserController::class, 'updatePassword'])->name('updatePassword');
     Route::put('/photo/{id}', [AdmUserController::class, 'updatePhoto'])->name('updatePhoto');
     Route::resource('hafalan', App\Http\Controllers\HafalanController::class)->only('index');
+    Route::post('import', [SiswaController::class, 'import'])->name('import');
+    Route::get('download', [SiswaController::class, 'downloadTemplate'])->name('download');
     Route::prefix('kelas')->group(function () {
         Route::resource('/', KelasController::class)->only(['index','store']);
         Route::resource('{kelas}/siswa', SiswaController::class)->only(['index','store']);
         Route::resource('nilai', App\Http\Controllers\NilaiController::class)->only('index');
+        Route::resource('raport', App\Http\Controllers\RaportController::class)->only('index');
         Route::get('{kelas}/nilai', [App\Http\Controllers\NilaiController::class,'nilaiKelas']);
     });
+    Route::prefix('nilai')->group(function () {
+        Route::get('siswa',[App\Http\Controllers\NilaiController::class,'nilaisiswa']);
+        Route::get('{kelas}/sikap',[App\Http\Controllers\NilaiSikapController::class,'nilaisikap']);
+        Route::resource('sikap',App\Http\Controllers\NilaiSikapController::class)->only('index');
+    });
+    Route::get('cetak/{kelas}',[App\Http\Controllers\RaportController::class,'cetak'] );
+
     Route::middleware('role:admin')->group(function () {
         Route::resource('adm-role', Adm_roleController::class)->except(['create','edit']);
         Route::resource('adm-role-menu', AdmRoleMenu::class)->only(['index','store']);

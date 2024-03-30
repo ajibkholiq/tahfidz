@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Login | SIM keuangan</title>
+    <title>Login | SITahfidz</title>
 
     <link href="{{URL::asset('assets/css/bootstrap.min.css')}}" rel="stylesheet">
     <link href="{{URL::asset('assets/font-awesome/css/font-awesome.css')}}" rel="stylesheet">

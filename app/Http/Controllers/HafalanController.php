@@ -25,7 +25,7 @@ class HafalanController extends Controller
         $suratId = surat::where('no_surat',$request->surat)->first();
         $siswaId = Siswa::where('uuid',$request->siswa)->first();
         $tahun_ajar = pelajaran::where('status','AKTIF')->first();
-        $semseter = SMSTR::where('status','AKTIF')->first();
+        $semester = SMSTR::where('status','AKTIF')->first();
         if ($tahun_ajar == [] || $semester == []) return response()->json(['message'=>'Tahun Pelajaran / Semester tidak ada yang aktif'], 200);
 
         $capaian = $this->getCapaian($this->getKategori($request->kefasihan),$this->getKategori($request->tajwid),$this->getKategori($request->kelancaran));
@@ -36,7 +36,7 @@ class HafalanController extends Controller
             'id_siswa' => $siswaId->id,
             'ayat' => "-",
             'tahun_pelajaran' => $tahun_ajar->tahun_pelajaran,
-            'semester' => $semseter->semester,
+            'semester' => $semester->semester,
             'kefasihan' => $request->kefasihan,
             'tajwid' => $request->tajwid,
             'kelancaran' => $request->kelancaran,
@@ -75,7 +75,7 @@ class HafalanController extends Controller
     }
 
     function getCapaian($kefasihan,$tajwid,$kelancaran){
-        if(($tajwid == "Kurang Baik" && ($kefasihan == "Cukup Baik" || $kefasihan == "Kurang Baik" ))|| ( $tajwid == "Cukup Baik" && $kefasihan == "Kurang Baik" && ($kelancaran == "Kurang Baik" || $kelancaran == "Cukup Baik")) ){
+        if(($tajwid == "Kurang Baik" && $kefasihan == "Cukup Baik")|| ( $tajwid == "Cukup Baik" && $kefasihan == "Kurang Baik" && ($kelancaran == "Kurang Baik" || $kelancaran == "Cukup Baik"))|| ( $tajwid == "Kurang Baik" && $kefasihan == "Kurang Baik" && ($kelancaran == "Kurang Baik" || $kelancaran == "Cukup Baik")) ){
             return "Belum Tercapai";
         }
         else return "Tercapai";

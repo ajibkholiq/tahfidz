@@ -45,6 +45,7 @@ document.addEventListener("DOMContentLoaded", function () {
         ],
     });
 });
+let no_surat;
 $("body").on("click", "#bt-edit", function () {
     $.ajax({
         url: "/api/surat/" + $(this).data("uuid"),
@@ -52,7 +53,8 @@ $("body").on("click", "#bt-edit", function () {
         success: (data) => {
             $("#uuid").val(data.uuid);
             $("#surat").val(data.nama);
-            $("#no_surat").val(data.no_surat);
+            
+            no_surat =data.no_surat;
             $("#ayat").val(data.ayat);
             $("#tingkat").val(data.kelas);
             $("#remarke").val(data.remark); 
@@ -66,7 +68,7 @@ $("#kelas-save").on("click", () => {
         type: "PUT",
         data: {
             nama : $("#surat").val(),
-            no_surat: $("#no_surat").val(),
+            no_surat: no_surat,
             ayat : $("#ayat").val(),
             tingkat : $("#tingkat").val(),
             remark : $("#remark").val(),

@@ -10,7 +10,7 @@
                                 <label class="col-sm-1 control-label" style="padding-top:8px">Kelas</label>
                                 <div class="col-sm-4">
                                     <select name="kelas" id="kelas" class="form-control">
-                                        <option value="">~Kelas~</option>
+                                        <option value="" readonly >~Kelas~</option>
                                         @foreach ($tingkat as $kelas)
                                             <option value="{{ $kelas->kelas }}">{{ $kelas->kelas }}</option>
                                         @endforeach
@@ -145,7 +145,14 @@
         </div>
     </div>
 @endsection
+
 @push('css')
+    <style>
+        @media only screen and (max-width: 600px) {
+        #auto {
+            display: none;
+        }}
+    </style>
     <link href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" rel="stylesheet" type="text/css" />
     <!--datatable responsive css-->
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">

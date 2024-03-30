@@ -15,9 +15,15 @@
             </div>
         @endif
         <div class="col-md-12" style="display: flex; justify-content:space-between">
-            <button id="btn-add" class="btn btn-primary" style="justify-items: end"><i class="fa fa-plus"></i>
-            Siswa</button>
-            <a href="{{url()->previous()}}" class="btn btn-primary" style="justify-items: end"><i class="fa fa-arrow-left"></i>
+            <div class="col-md-3">
+                <button id="btn-add" class="btn btn-primary" style="justify-items: end"><i class="fa fa-plus"></i>
+                    Siswa</button>
+                <button id="import" class="btn btn-primary" style="justify-items: end"><i class="fa fa-plus"></i>
+                    Import</button>
+            </div>
+           
+            <a href="{{ url()->previous() }}" class="btn btn-primary" style="justify-items: end"><i
+                    class="fa fa-arrow-left"></i>
                 Back</a>
         </div>
 
@@ -53,6 +59,32 @@
                                 </tr>
                             </thead>
                         </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="import-modal" class="modal in" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <h4>Import Siswa</h4>
+                        <form method="post" action="{{route('import')}}"class="form-horizontal" enctype="multipart/form-data">
+                            @csrf
+                            <div class="hr-line-dashed"></div>
+                            <input type="hidden" name="kelas" value="{{Request::segment(2)}}">
+                            <div class="form-group"><label class="col-sm-3 control-label">File Excel</label>
+
+                                <div class="col-sm-9"><input type="file" name="file"
+                                        required class="form-control"></div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-sm-9 col-sm-offset-3" style="text-align: end">
+                                    <a class="btn btn-primary" href="{{route('download')}}">Download Template </a>
+                                    <button class="btn btn-primary">Import</button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -141,8 +173,8 @@
                                         class="form-control"></div>
                             </div>
                             <div class="form-group"><label class="col-sm-3 control-label">Alamat</label>
-                                <div class="col-sm-9"><input type="text" placeholder="Alamat" id="alamat" name="alamat" required
-                                        class="form-control"></div>
+                                <div class="col-sm-9"><input type="text" placeholder="Alamat" id="alamat"
+                                        name="alamat" required class="form-control"></div>
                             </div>
                             <div class="form-group"><label class="col-sm-3 control-label">Keterangan</label>
                                 <div class="col-sm-9"><input type="text" placeholder="Keterangan" id="remark"

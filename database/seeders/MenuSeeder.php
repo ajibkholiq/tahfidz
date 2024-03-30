@@ -114,19 +114,39 @@ class MenuSeeder extends Seeder
             'icon' => "",
             'urut' => "",
             'nama_menu' =>'Siswa',
+            'route' =>  'nilai/siswa',
+            'remark' => 'Rekapan Data',
+        ]);
+        adm_menu::create([
+            'induk' => 'head',
+            'uuid' => uniqid(),
+            'kode_menu' => 'E',
+            'icon' => "",
+            'urut' => "",
+            'nama_menu' =>'Raport',
             'route' =>  '',
             'remark' => 'Rekapan Data',
         ]);
-        // adm_menu::create([
-        //     'induk' => 'Nilai',
-        //     'uuid' => uniqid(),
-        //     'kode_menu' => '',
-        //     'icon' => "",
-        //     'urut' => "",
-        //     'nama_menu' =>'Sikap',
-        //     'route' =>  'nilai/sikap',
-        //     'remark' => 'Rekapan Data',
-        // ]);
+        adm_menu::create([
+            'induk' => 'Raport',
+            'uuid' => uniqid(),
+            'kode_menu' => '',
+            'icon' => "",
+            'urut' => "",
+            'nama_menu' =>'Nilai Sikap',
+            'route' =>  'nilai/sikap',
+            'remark' => 'Rekapan Data',
+        ]);
+        adm_menu::create([
+            'induk' => 'Raport',
+            'uuid' => uniqid(),
+            'kode_menu' => '',
+            'icon' => "",
+            'urut' => "",
+            'nama_menu' =>'Cetak Raport',
+            'route' =>  'kelas/raport',
+            'remark' => 'Rekapan Data',
+        ]);
       
      
     }

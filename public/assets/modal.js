@@ -1,7 +1,7 @@
 let table;
 document.addEventListener("DOMContentLoaded", function () {
     var path = window.location.pathname;
-    var segments = path.split('/');
+    var segments = path.split("/");
     table = new DataTable("#data-table", {
         dom: "ftipl",
         processing: false,
@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
             emptyTable: "Tidak ada data",
         },
         ajax: {
-            url: "/api/kelas/"+segments[2],
+            url: "/api/kelas/" + segments[2],
             type: "GET",
         },
         columns: [
@@ -33,8 +33,7 @@ document.addEventListener("DOMContentLoaded", function () {
             { title: "No Hp", data: "no_hp" },
             {
                 title: "Alamat",
-                data: 'alamat',
-               
+                data: "alamat",
             },
             { title: "Keterangan", data: "remark" },
             {
@@ -105,4 +104,8 @@ $("#ubahsiswa").click(function () {
             console.log(response);
         },
     });
+});
+$('#import').click(function (){
+    $('#import-modal').modal('show');
+
 });

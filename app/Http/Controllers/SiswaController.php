@@ -7,6 +7,8 @@ use app\Helper\menu;
 use Session;
 use App\Models\Siswa;
 use App\Models\Kelas;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\SiswaImport;
 
 class SiswaController extends Controller
 {
@@ -75,4 +77,26 @@ class SiswaController extends Controller
         }
         return response()->json(['fail' => 'siswa gagal dihapus', 'data' => $id]);
     }
+    function import(Request $request)
+    {
+        // Validasi file
+        $request->validate([
+            'file' => 'required|mimes:xls,xlsx'
+        ]);
+
+        $kelas = $request->input('kelas');
+        $kelas = Kelas::where('kelas',$kelas)->first();
+
+        $file = $request->file('file');
+
+        Excel::import(new SiswaImport($kelas->id), $file);
+
+        return redirect()->back()->with('success', 'Data siswa telah diimpor.');
+    }
+    function downloadTemplate(){
+
+    $file = storage_path('template/siswa.xlsx');
+
+    return response()->download($file);
+}
 }
