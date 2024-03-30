@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
             emptyTable: "Tidak ada data",
         },
         ajax: {
-            url: "/api/kelas/" + segments[2],
+            url: "/api/siswa/kelas/" + segments[2],
             type: "GET",
         },
         columns: [

@@ -48,19 +48,17 @@ Route::get('tingkat', function(){return ['data' => MasterTingkat::all()];});
 Route::get('thn-ajar', function(){return ['data' => pelajaran::all()];});
 Route::get('semester', function(){return ['data' => SMSTR::all()];});
 Route::get('pegawai', function(){return ['data' => User::all()];});
-Route::prefix('kelas')->group(function () {
-    Route::get('/', function(){
-        return ['data' => kelas::join('users','user_id','users.id')
-                        ->select('kelas.id','kelas.uuid','kelas','tingkat', 'kelas.remark','users.nama')->get()];
-    });
-    Route::get('/{kelas}', function($kelas){
+
+Route::get('siswa/kelas/{kelas}', function($kelas){
         return ['data' => Siswa::join('kelas','id_kelas','kelas.id')
                         ->where('kelas',$kelas)
                         ->select('siswa.uuid','nis','nama','kelas.kelas','alamat','nama_ayah','nama_ibu','no_hp','siswa.remark',)->get()];
     });   
-    Route::resource('/', App\Http\Controllers\KelasController::class)->only('update','destroy','show');
-
+Route::get('kelas', function(){
+    return ['data' => kelas::join('users','user_id','users.id')
+                    ->select('kelas.id','kelas.uuid','kelas','tingkat', 'kelas.remark','users.nama')->get()];
 });
+Route::resource('kelas', App\Http\Controllers\KelasController::class)->only('update','destroy','show');
 Route::get('cetak/raport/', [App\Http\Controllers\RaportController::class,'getRaportKelas']);
 Route::resource('hafalan',  App\Http\Controllers\HafalanController::class)->except('index');
 Route::resource('surat',  App\Http\Controllers\SuratController::class)->except(['index','store']);

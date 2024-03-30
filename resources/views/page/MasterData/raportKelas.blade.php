@@ -80,7 +80,7 @@
                         render: function(data, type, row) {
                             return `
                     <div style="display: flex ; gap:5px;justify-content:center">
-                    <a class="btn btn-outline btn-primary btn-sm" href='/cetak/${data.kelas}'>Lihat</button>
+                    <a class="btn btn-outline btn-primary btn-sm" href='/cetak/${data.kelas}'>Export</button>
                     <div> `;
                         },
                     },
