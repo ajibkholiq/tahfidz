@@ -54,6 +54,25 @@ document.addEventListener("DOMContentLoaded", function () {
 $("#btn-add").click(() => {
     $("#add-siswa").modal("show");
 });
+$("#naik").click(() => {
+    $("#naik-kelas").modal("show");
+});
+$("#naik-save").click(() => {
+    $.ajax({
+        url: "/api/siswa/naik/kelas",
+        type: "post",
+        data : {
+            asal : $('#asal').val(),
+            tujuan : $('#tujuan').val(),
+        },
+        success: () => {
+            toastr.success("Berhasil Naik Kelas!", "Siswa");
+            table.ajax.reload();
+            $("#naik-kelas").modal("hide");
+
+        },
+    });
+});
 $(document).on("click", "#bt-hapus", function () {
     let uuid = $(this).data("id");
     $.ajax({

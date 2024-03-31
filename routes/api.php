@@ -68,6 +68,8 @@ Route::get('/siswa', function(){
     $data = Siswa::all();
     return response()->json($data);
 });
+Route::post('siswa/naik/kelas', [App\Http\Controllers\SiswaController::class, 'naikKelas']);
+
 Route::prefix('nilai')->group(function () {
     Route::get('{kelas}/sikap', [App\Http\Controllers\NilaiSikapController::class, 'getNilaiSikap'] );
     Route::get('/',[App\Http\Controllers\NilaiController::class, 'getNilaiSiswa'] );

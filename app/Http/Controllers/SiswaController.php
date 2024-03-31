@@ -99,4 +99,16 @@ class SiswaController extends Controller
 
     return response()->download($file);
 }
+    function naikKelas(Request $request){
+        $asalKelas = $request->asal;
+        $tujuanKelas = $request->tujuan; 
+        $result = Siswa::join('kelas','id_kelas','kelas.id')->where('kelas.kelas',$asalKelas)->update([
+                'id_kelas' => $tujuanKelas,
+        ]);
+        if($result) {
+            return response()->json(['succsess' => 'siswa berhasil naik kelas']);
+        }
+        return response()->json(['fail' => 'siswa gagal dihapus']);
+
+    }
 }
