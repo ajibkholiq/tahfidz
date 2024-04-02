@@ -358,28 +358,46 @@ function evaluasi(surat, text, audio = null) {
         },
     });
 }
-
 $("#scan").click(() => {
     $("#scan-qr").modal("show");
     var scanning = true; // Variabel boolean untuk menandai pemindaian QR code
+    var video = document.getElementById("video");
+    var canvas = document.getElementById("canvas");
+    var switchCameraBtn = document.getElementById("switch");
 
-    navigator.mediaDevices
-        .getUserMedia({ video: true })
+    navigator.mediaDevices.getUserMedia({ video: true })
         .then(function (stream) {
-            var video = document.getElementById("video");
             video.srcObject = stream;
             video.play();
 
-            var canvas = document.getElementById("canvas");
             var context = canvas.getContext("2d");
 
             // Function to stop scanning
-            function stopScanning() {
+            function stopScanning(hide) {
                 scanning = false;
                 stream.getTracks().forEach((track) => track.stop()); // Stop video stream
                 context.clearRect(0, 0, canvas.width, canvas.height);
-                $("#scan-qr").modal("hide");
+                if (hide) $("#scan-qr").modal("hide");
+            }
 
+            // Function to switch camera
+            function switchCamera() {
+                stopScanning(false); // Stop current scanning
+                const facingMode = video.srcObject.getVideoTracks()[0].getSettings().facingMode;
+                const newFacingMode = facingMode === "user" ? "environment" : "user"; // Toggle between "user" and "environment"
+                const constraints = {
+                    video: { facingMode: newFacingMode }
+                };
+                navigator.mediaDevices.getUserMedia(constraints)
+                    .then(function (newStream) {
+                        video.srcObject = newStream;
+                        video.play();
+                        scanning = true; // Restart scanning
+                        scanQRCode(); // Start scanning again
+                    })
+                    .catch(function (error) {
+                        console.error("Error switching camera:", error);
+                    });
             }
 
             // Continuously scan for QR codes
@@ -403,7 +421,7 @@ $("#scan").click(() => {
                     siswa = nama.replace(url+"/capaian/",'');
                     siswa = siswa.replace('_'," ");
                     manualShow(siswa);
-                    stopScanning(); // Stop scanning when QR code detected
+                    stopScanning(true); // Stop scanning when QR code detected
                     // Do something with the QR code data
                 } else {
                     // If QR code not detected, continue scanning
@@ -413,11 +431,103 @@ $("#scan").click(() => {
 
             // Start scanning
             scanQRCode();
+
+            // Event listener for closing modal
             $("#close").click(() => {
-                stopScanning();
+                stopScanning(true);
             });
+
+            // Event listener for switch camera button
+            switchCameraBtn.addEventListener("click", switchCamera);
         })
         .catch(function (err) {
             console.error("Error accessing the camera:", err);
         });
 });
+
+// $("#scan").click(() => {
+//     $("#scan-qr").modal("show");
+//     var scanning = true; // Variabel boolean untuk menandai pemindaian QR code
+//     var scanning = true; // Variabel boolean untuk menandai pemindaian QR code
+//     var video = document.getElementById("video");
+//     var cameraSelect = document.getElementById("cameraSelect");
+
+//     // Fungsi untuk mengubah kamera
+//     async function switchCamera() {
+//         const constraints = {
+//             video: {
+//                 facingMode: cameraSelect.value // Menggunakan nilai dari opsi terpilih
+//             }
+//         };
+
+//         // Dapatkan media dari kamera yang dipilih
+//         const stream = await navigator.mediaDevices.getUserMedia(constraints);
+
+//         // Atur sumber media video
+//         video.srcObject = stream;
+//     }
+
+//     // Panggil fungsi switchCamera() saat opsi kamera dipilih berubah
+//     cameraSelect.addEventListener('change', switchCamera);
+
+//     // Panggil switchCamera() untuk mengatur kamera default saat halaman dimuat
+//     switchCamera();
+
+//     navigator.mediaDevices
+//         .getUserMedia({ video: true })
+//         .then(function (stream) {
+//             var video = document.getElementById("video");
+//             video.srcObject = stream;
+//             video.play();
+
+//             var canvas = document.getElementById("canvas");
+//             var context = canvas.getContext("2d");
+
+//             // Function to stop scanning
+//             function stopScanning() {
+//                 scanning = false;
+//                 stream.getTracks().forEach((track) => track.stop()); // Stop video stream
+//                 context.clearRect(0, 0, canvas.width, canvas.height);
+//                 $("#scan-qr").modal("hide");
+
+//             }
+
+//             // Continuously scan for QR codes
+//             function scanQRCode() {
+//                 if (!scanning) return; // Stop scanning if scanning is false
+//                 context.drawImage(video, 0, 0, canvas.width, canvas.height);
+//                 var imageData = context.getImageData(
+//                     0,
+//                     0,
+//                     canvas.width,
+//                     canvas.height
+//                 );
+//                 var code = jsQR(
+//                     imageData.data,
+//                     imageData.width,
+//                     imageData.height
+//                 );
+//                 if (code) {
+//                     nama = code.data
+//                     url = $('#scan-qr').data('url');
+//                     siswa = nama.replace(url+"/capaian/",'');
+//                     siswa = siswa.replace('_'," ");
+//                     manualShow(siswa);
+//                     stopScanning(); // Stop scanning when QR code detected
+//                     // Do something with the QR code data
+//                 } else {
+//                     // If QR code not detected, continue scanning
+//                     requestAnimationFrame(scanQRCode);
+//                 }
+//             }
+
+//             // Start scanning
+//             scanQRCode();
+//             $("#close").click(() => {
+//                 stopScanning();
+//             });
+//         })
+//         .catch(function (err) {
+//             console.error("Error accessing the camera:", err);
+//         });
+// });
