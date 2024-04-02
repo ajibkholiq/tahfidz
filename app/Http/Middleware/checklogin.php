@@ -20,6 +20,6 @@ class checklogin
          return $next($request);}
         // return redirect()->back()->with('fail','kamu bukan bagian dari'.$role);
     
-        return redirect('/login')->with('fail','login dulu yah :)');
+        return redirect('/')->with('fail','login dulu yah :)');
     }
 }

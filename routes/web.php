@@ -34,10 +34,8 @@ use Illuminate\Support\Facades\DB;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::get('/', function () {
-    return '"<a href="login">login</a> "';
-});
-Route::get('/login', [loginController::class , 'index' ])->name('login');
+
+Route::get('/', [loginController::class , 'index' ])->name('login');
 Route::get('/logout', [loginController::class , 'logout' ])->name('logout');
 Route::post('/validate', [loginController::class , 'validasi' ])->name('validate');
 Route::middleware('checklogin')->group(function () {

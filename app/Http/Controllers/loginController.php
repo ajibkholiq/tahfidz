@@ -28,11 +28,11 @@ class loginController extends Controller
             Session::put('role', $user->role);
             Session::put('nama', $user->nama);
             Session::put('photo', $user->foto);
-            if($request->session()->get('_previous')['url'] == url('login')){
-                $request->session()->get('_previous')['url']; 
+            $url = $request->session()->get('_previous')['url']; 
+            if($url != url('login')){
             return redirect('/dashboard');
-            }
-            return redirect()->back();
+            }   
+            return redirect($url);
             // return Session::get('role');
         }
         return redirect()->back()->with('fail' , 'password salah!');
@@ -44,7 +44,7 @@ class loginController extends Controller
     function logout(){
         Auth::logout();
         Session::invalidate();
-        Session::regenerateToken();
-        return redirect('/login');
+        Session::regenerateToken(); 
+        return redirect('/');
     }
 }

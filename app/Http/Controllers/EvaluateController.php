@@ -17,7 +17,7 @@ class EvaluateController extends Controller
     $text = $request->text;
     $audio = $request->file('audio');
     $no_surat = $request->no_surat;
-    $siswa = Siswa::where('uuid',$request->siswa)->first();
+    $siswa = Siswa::where('nama',$request->siswa)->first();
     $audioName = $siswa->nama."_".$no_surat.'.'.$audio->getClientOriginalExtension();
     // Menyimpan file audio ke folder public/audio (pastikan folder sudah ada dan writable)
     $audioPath = $audio->move(public_path('audio/siswa'), $audioName);

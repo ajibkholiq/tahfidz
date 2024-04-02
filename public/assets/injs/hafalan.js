@@ -1,7 +1,61 @@
-let siswa, kelas ,table,audioName;
-document.addEventListener("DOMContentLoaded", function () {
+let siswa, kelas, table,tableNilai, audioName;
+    document.addEventListener("DOMContentLoaded", function () {
+        tableNilai = new DataTable("#data-nilai", {
+            dom: "ftpl",
+            processing: false,
+            ordering: true,
+            lengthMenu: [
+                [10, 25, 50, -1],
+                [10, 25, 50, "All"],
+            ],
+            language: {
+                emptyTable:
+                    "Tidak ada data! pastikan semester dan tahun pelajaran ada yang aktif",
+            },
+            ajax: {
+                url: "/api/nilai",
+                type: "GET",
+            },
+            columns: [
+                {
+                    title: "No",
+                    data: null,
+                    render: function (data, type, row, meta) {
+                        return meta.row + 1; // Mengembalikan nomor baris, dimulai dari 1
+                    },
+                },
+                {
+                    title: "Nama",
+                    data: "nama",
+                },
+                {
+                    title: "Kelas",
+                    data: "kelas",
+                },
+                {
+                    title: "Surat",
+                    data: "surat",
+                },
+                {
+                    title: "Kefasihan",
+                    data: "kefasihan",
+                },
+                {
+                    title: "Tajwid",
+                    data: "tajwid",
+                },
+                {
+                    title: "Kelancaran",
+                    data: "kelancaran",
+                },
+                {
+                    title: "Capaian",
+                    data: "capaian",
+                },
+            ],
+        });
     table = new DataTable("#data-table", {
-        dom: "tpl",
+        dom: "ftpl",
         columnDefs: [
             { width: "20px", targets: 0 }, // Menentukan lebar kolom nomor
             { width: "100px", targets: 4 },
@@ -27,21 +81,21 @@ document.addEventListener("DOMContentLoaded", function () {
                     return meta.row + 1; // Mengembalikan nomor baris, dimulai dari 1
                 },
             },
-            { title: "NIS", data: "nis" },
-            { title: "Nama", data: "nama" },
-            { title: "Kelas", data: "kelas" },
             {
                 title: "Action",
                 data: null,
                 render: function (data, type, row) {
                     return `
                     <div style="display:flex; gap:8px; justify-content: center">
-                    <button id="auto" class="btn btn-outline btn-sm btn-primary " data-id="${data.uuid}" data-nama="${data.nama}">Dengarkan</button>
-                    <button id="manual" class="btn btn-outline btn-sm btn-primary " data-uuid="${data.uuid}" data-namaa="${data.nama}">Manual</button>
+                    <button id="manual" class="btn btn-outline btn-sm btn-primary " data-uuid="${data.uuid}" data-namaa="${data.nama}">Ziyadah</button>
                      </div>
                    `;
                 },
             },
+            { title: "NIS", data: "nis" },
+            { title: "Nama", data: "nama" },
+            { title: "Kelas", data: "kelas" },
+           
         ],
     });
     $.ajax({
@@ -64,19 +118,32 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 $("body").on("click", "#auto", function () {
-    siswa = $(this).data("id");
-    $("#nama").val($(this).data("nama"));
+    $("#modal-manual").modal("hide");
+    $("#nama").val(siswa);
     $("#modal-dengar").modal("show");
 });
 $("body").on("click", "#manual", function () {
-    siswa = $(this).data("uuid");
-    $("#namam").val($(this).data("namaa"));
-    $("#modal-manual").modal("show");
+    siswa = $(this).data("namaa")
+    manualShow(siswa);
 });
+function manualShow(sis) {
+    siswa = sis;
+    $("#namam").val(siswa);
+    $("#modal-manual").modal("show");
+}
 $("#kelas").on("change", () => {
     kls = $("#kelas").val();
-    kls == "" ? (url = "/api/getSiswa") : (url = "/api/kelas/" + kls);
+    if (kls == ""){
+        url = "/api/getSiswa";
+        nl = "/api/nilai"
+    }
+    else {
+        url = "/api/siswa/kelas/" + kls;
+        nl = "/api/nilai/" + kls;
+    }
     table.ajax.url(url).load();
+    tableNilai.ajax.url(nl).load()
+
     $.ajax({
         url: "/api/getsurat/" + kls,
         type: "GET",
@@ -96,20 +163,20 @@ $("#kelas").on("change", () => {
         },
     });
 });
-// 
-$('#save').on('click',()=>{
+//
+$("#save").on("click", () => {
     $.ajax({
         url: "/api/hafalan",
         type: "post",
         data: {
-            siswa : siswa ,
+            siswa: siswa,
             surat: $("#surat").val(),
             kefasihan: $("#kefasihan").val(),
-            tajwid :$("#tajwid").val(),
-            kelancaran :$("#kelancaran").val(),
+            tajwid: $("#tajwid").val(),
+            kelancaran: $("#kelancaran").val(),
             audio: audioName,
-            remark : $("#catatan").val()
-            },
+            remark: $("#catatan").val(),
+        },
         success: (data) => {
             $("#modal-dengar").modal("hide");
             $("#nilai").hide();
@@ -118,33 +185,29 @@ $('#save').on('click',()=>{
             table.ajax.reload();
         },
     });
-
-
 });
-$('#save-manual').on('click',()=>{
+$("#save-manual").on("click", () => {
     $.ajax({
         url: "/api/hafalan",
         type: "post",
         data: {
-            siswa : siswa ,
+            siswa: siswa,
             surat: $("#suratm").val(),
             kefasihan: $("#kefasihanm").val(),
-            tajwid :$("#tajwidm").val(),
-            kelancaran :$("#kelancaranm").val(),
-            remark : $("#catatanm").val()
-            },
+            tajwid: $("#tajwidm").val(),
+            kelancaran: $("#kelancaranm").val(),
+            remark: $("#catatanm").val(),
+        },
         success: (data) => {
             $("#modal-manual").modal("hide");
-            $("#kefasihanm").val('');
-            $("#tajwidm").val('');
-            $("#kelancaranm").val('');
-            $("#catatanm").val('');
+            $("#kefasihanm").val("");
+            $("#tajwidm").val("");
+            $("#kelancaranm").val("");
+            $("#catatanm").val("");
             toastr.success(data.message, "Terima Kasih!");
             table.ajax.reload();
         },
     });
-
-
 });
 
 window.onload = function () {
@@ -217,7 +280,6 @@ window.onload = function () {
                         text = text.replace("بسم الله الرحمن الرحيم", "");
                         evaluasi($("#surat").val(), text, audioBlob);
                         text = "";
-
                     });
                     startButton.disabled = true;
                     stopButton.disabled = false;
@@ -296,3 +358,66 @@ function evaluasi(surat, text, audio = null) {
         },
     });
 }
+
+$("#scan").click(() => {
+    $("#scan-qr").modal("show");
+    var scanning = true; // Variabel boolean untuk menandai pemindaian QR code
+
+    navigator.mediaDevices
+        .getUserMedia({ video: true })
+        .then(function (stream) {
+            var video = document.getElementById("video");
+            video.srcObject = stream;
+            video.play();
+
+            var canvas = document.getElementById("canvas");
+            var context = canvas.getContext("2d");
+
+            // Function to stop scanning
+            function stopScanning() {
+                scanning = false;
+                stream.getTracks().forEach((track) => track.stop()); // Stop video stream
+                context.clearRect(0, 0, canvas.width, canvas.height);
+                $("#scan-qr").modal("hide");
+
+            }
+
+            // Continuously scan for QR codes
+            function scanQRCode() {
+                if (!scanning) return; // Stop scanning if scanning is false
+                context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                var imageData = context.getImageData(
+                    0,
+                    0,
+                    canvas.width,
+                    canvas.height
+                );
+                var code = jsQR(
+                    imageData.data,
+                    imageData.width,
+                    imageData.height
+                );
+                if (code) {
+                    nama = code.data
+                    url = $('#scan-qr').data('url');
+                    siswa = nama.replace(url+"/capaian/",'');
+                    siswa = siswa.replace('_'," ");
+                    manualShow(siswa);
+                    stopScanning(); // Stop scanning when QR code detected
+                    // Do something with the QR code data
+                } else {
+                    // If QR code not detected, continue scanning
+                    requestAnimationFrame(scanQRCode);
+                }
+            }
+
+            // Start scanning
+            scanQRCode();
+            $("#close").click(() => {
+                stopScanning();
+            });
+        })
+        .catch(function (err) {
+            console.error("Error accessing the camera:", err);
+        });
+});

@@ -46,6 +46,10 @@
     <div id="add-kelas" class="modal in" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span
+                            class="sr-only">Close</span></button>
+                </div>
                 <div class="modal-body">
                     <h4>Tambah Surat</h4>
                     <form method="post" action="{{ URL::Route('surat.store') }}"class="form-horizontal">
@@ -96,6 +100,10 @@
     <div id="edit-kelas" class="modal in" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span
+                            class="sr-only">Close</span></button>
+                </div>
                 <div class="modal-body">
                     <h4>Edit Kelas</h4>
                     <div class="form-horizontal">

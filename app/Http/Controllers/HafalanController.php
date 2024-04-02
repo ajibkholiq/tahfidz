@@ -23,7 +23,7 @@ class HafalanController extends Controller
 
     function store(Request $request){
         $suratId = surat::where('no_surat',$request->surat)->first();
-        $siswaId = Siswa::where('uuid',$request->siswa)->first();
+        $siswaId = Siswa::where('nama',$request->siswa)->first();
         $tahun_ajar = pelajaran::where('status','AKTIF')->first();
         $semester = SMSTR::where('status','AKTIF')->first();
         if ($tahun_ajar == [] || $semester == []) return response()->json(['message'=>'Tahun Pelajaran / Semester tidak ada yang aktif'], 200);

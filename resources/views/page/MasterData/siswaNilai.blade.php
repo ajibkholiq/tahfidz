@@ -59,6 +59,10 @@
     <div id="modal-manual" class="modal modal-large in" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span
+                            class="sr-only">Close</span></button>
+                </div>
                 <div class="modal-body">
                     <h4>Nilai Hafalan</h4>
                     <div class="form-horizontal">
@@ -108,110 +112,6 @@
     {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script> // export pdf --}}
     {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script> // export pdf --}}
     <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script> {{-- print --}}
-    {{-- <script src="{{ URL::asset('assets/modal.js') }}"></script> --}}
-    <script>
-        let table;
-        document.addEventListener("DOMContentLoaded", function() {
-            var path = window.location.pathname;
-            var segments = path.split('/');
-            table = new DataTable("#data-table", {
-                dom: "ftipl",
-                processing: false,
-                ordering: true,
-                lengthMenu: [
-                    [10, 25, 50, -1],
-                    [10, 25, 50, "All"],
-                ],
-                language: {
-                    emptyTable: "Tidak ada data! pastikan semester dan tahun pelajaran ada yang aktif",
-                },
-                ajax: {
-                    url: "/api/nilai/" + segments[2],
-                    type: "GET",
-                },
-                columns: [{
-                        title: "No",
-                        data: null,
-                        render: function(data, type, row, meta) {
-                            return meta.row + 1; // Mengembalikan nomor baris, dimulai dari 1
-                        },
-                    },
-                    {
-                        title: "Action",
-                        data: null,
-                        render: function(data, type, row) {
-                            return `
-                    <div style="display:flex; gap:8px; justify-content: center">
-                    <button id="perbaikan" class="btn btn-outline btn-sm btn-primary fa fa-pencil" data-id="${data.uuid}" data-nama="${data.nama}"> Perbaikan</button> 
-                   `;
-                        },
-                    },
-                    {
-                        title: "Nama",
-                        data: "nama"
-                    },
-                    {
-                        title: "Kelas",
-                        data: "kelas"
-                    },
-                    {
-                        title: "Surat",
-                        data: "surat"
-                    },
-                    {
-                        title: "Kefasihan",
-                        data: "kefasihan"
-                    },{
-                        title: "Tajwid",
-                        data: "tajwid"
-                    },{
-                        title: "Kelancaran",
-                        data: "kelancaran"
-                    },{
-                        title: "Capaian",
-                        data: "capaian"
-                    },
-
-                ],
-            });
-        });
-        let uuid;
-        $(document).on("click", "#perbaikan", function() {
-            uuid = $(this).data("id");
-            $.ajax({
-                url: "/api/hafalan/" + uuid,
-                type: "get",
-                success: (data) => {
-                    $("#nama").val($(this).data('nama'));
-                    $("#kefasihan").val(data.kefasihan);
-                    $("#tajwid").val(data.tajwid);
-                    $("#kelancaran").val(data.kelancaran);
-                    $("#catatan").val(data.remark);
-                    $('#modal-manual').modal('show');
-                    console.log(data);  
-                    
-                    // console.log
-                    // toastr.success("Berhasil dihapus!", "Data Kelas");
-                },
-            });
-        });
-        $(document).on("click", "#save", function() {
-            $.ajax({
-                url: "/api/hafalan/" + uuid,
-                type: "PUT",
-                data :{
-                    kefasihan : $("#kefasihan").val(),
-                    tajwid : $("#tajwid").val(),
-                    kelancaran :$("#kelancaran").val(),
-                    remark : $("#catatan").val(),
-                },
-                success: (data) => {
-                    $('#modal-manual').modal('hide');      
-                    table.ajax.reload();
-                    toastr.success("Berhasil disimpan!", "Perbaikan");
-                },
-            });
-        });
-
-    </script>
+    <script src="{{ URL::asset('assets/injs/siswanilai.js') }}"></script>
+    
 @endpush

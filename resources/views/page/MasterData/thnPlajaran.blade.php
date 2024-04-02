@@ -9,15 +9,11 @@
                 </div>
             </div>
         @endif
-
-        <div class="col-md-12">
-            <a data-toggle="modal"href="#add-thn" class="btn btn-primary" style="justify-items: end"><i
-                    class="fa fa-plus"></i> Tahun Pelajaran</a>
-        </div>
-
-        <div class="col-lg-12 " style="margin-top: 10px ;margin-bottom: 30px">
+        <div class="col-lg-6 " style="margin-top: 10px ;margin-bottom: 30px">
             <div class="ibox float-e-margins">
                 <div class="ibox-content">
+                        <a data-toggle="modal"href="#add-thn" class="btn btn-primary" style="justify-items: end"><i
+                                class="fa fa-plus"></i> Tahun Pelajaran</a>
                     <div class="table-responsive">
                         <table id="data-table" class="table table-striped cell-border">
                             <thead>
@@ -39,10 +35,81 @@
                 </div>
             </div>
         </div>
+        <div class="col-lg-6 " style="margin-top: 10px ;margin-bottom: 30px">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <a data-toggle="modal"href="#add-smt" class="btn btn-primary" style="justify-items: end"><i
+                        class="fa fa-plus"></i> Semester</a>
+                    <div class="table-responsive">
+                        <table id="data-smt" class="table cell-border " style="width:100%">
+                            <thead>
+                                <tr>
+                                    <style>
+                                        .text-center {
+                                            text-align: center;
+                                        }
+                                    </style>
+                                    <th>No</th>
+                                    <th>Semester</th>
+                                    <th>Status</th>
+                                    <th>keterangan</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="add-smt" class="modal in" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span
+                            class="sr-only">Close</span></button>
+                </div>
+                <div class="modal-body">
+                    <h4>Tambah Semester</h4>
+                    <form method="post" action="{{ URL::Route('semester.store') }}"class="form-horizontal">
+                        @csrf
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group"><label class="col-sm-2 control-label">Semester</label>
+
+                            <div class="col-sm-10"><input type="text" placeholder="Semester" name="semester" required
+                                    class="form-control"></div>
+                        </div>
+                        <div class="form-group"><label class="col-sm-2 control-label">Status</label>
+                            <div class="col-sm-10">
+                                <select name="status" id="" required class=" form-control">
+                                    <option value="TIDAK">TIDAK</option>
+                                    <option value="AKTIF">AKTIF</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group"><label class="col-sm-2 control-label">Keterangan</label>
+                            <div class="col-sm-10"><input type="text" placeholder="Keterangan" name="remark" 
+                                    class="form-control"></div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-sm-10 col-sm-offset-2" style="text-align: end">
+                                <button class="btn btn-primary">Save</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
     <div id="add-thn" class="modal in" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span
+                            class="sr-only">Close</span></button>
+                </div>
                 <div class="modal-body">
                     <h4>Tambah Tahun Pelajaran</h4>
                     <form method="post" action="{{ URL::Route('tahun_pelajaran.store') }}"class="form-horizontal">
@@ -62,7 +129,7 @@
                             </div>
                         </div>
                         <div class="form-group"><label class="col-sm-2 control-label">Keterangan</label>
-                            <div class="col-sm-10"><input type="text" placeholder="Keterangan" name="remark" 
+                            <div class="col-sm-10"><input type="text" placeholder="Keterangan" name="remark"
                                     class="form-control"></div>
                         </div>
                         <div class="hr-line-dashed"></div>
@@ -94,4 +161,5 @@
     <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script> {{-- print --}}
     <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
     <script src="{{ URL::asset('assets/injs/thnPljrn.js') }}"></script>
+    <script src="{{ URL::asset('assets/injs/semester.js') }}"></script>
 @endpush

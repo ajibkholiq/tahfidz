@@ -29,7 +29,7 @@ class SemesterController extends Controller
                 ]
             );
         }
-        return redirect()->back()->with('success','Tahun Pelajaran Behasil ditambahkan');
+        return redirect()->back()->with('success','Tahun Semester Behasil ditambahkan');
         
     }
     function update($uuid ,Request $request){

@@ -1,6 +1,6 @@
-let table;
+let tablesmt;
 document.addEventListener("DOMContentLoaded", function () {
-    table = new DataTable("#data-table", {
+    tablesmt = new DataTable("#data-smt", {
         dom: "tpl",
         columnDefs: [
             { width: "20x", targets: 0},
@@ -45,9 +45,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                     return `
                     <div style="display:flex; gap:8px; justify-content: center">
-                    <button id="bt-edit" class="btn btn-outline btn-sm ${clas}" data-uuid="${data.uuid}" data-status ="${data.status}" ">${a}</button>
+                    <button id="bt-edit-sm" class="btn btn-outline btn-sm ${clas}" data-uuid="${data.uuid}" data-status ="${data.status}" ">${a}</button>
 
-                   <button id="bt-hapus" class="btn btn-outline btn-sm btn-danger fa fa-trash-o" data-id="${data.uuid}"></button> 
+                   <button id="bt-hapus-sm" class="btn btn-outline btn-sm btn-danger fa fa-trash-o" data-id="${data.uuid}"></button> 
                     </div>
                    `;
                 },
@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", function () {
         ],
     });
 });
-$("body").on("click", "#bt-edit", function () {
+$("body").on("click", "#bt-edit-sm", function () {
     let uuid = $(this).data("uuid");
     let statu = $(this).data("status");
     $.ajax({
@@ -67,17 +67,16 @@ $("body").on("click", "#bt-edit", function () {
         },
         success: function () {
             if (statu == "AKTIF") {
-                toastr.success("Berhasil dinonaktifkan!", "Tahun Pelajaran");
+                toastr.success("Berhasil dinonaktifkan!", "Semester");
             } else {
-                toastr.success("Berhasil diaktifkan!", "Tahun Pelajaran");
+                toastr.success("Berhasil diaktifkan!", "Semester");
             }
-            table.ajax.reload();
-            table.ajax.reload();
+            tablesmt.ajax.reload();
         },
     });
 });
 
-$(document).on("click", "#bt-hapus", function () {
+$(document).on("click", "#bt-hapus-sm", function () {
     let uuid = $(this).data("id");
     $.ajax({
         url: "/api/semester/" + uuid,
@@ -88,7 +87,7 @@ $(document).on("click", "#bt-hapus", function () {
         },
         success: () => {
             toastr.success("Berhasil dihapus!", "Semester");
-            table.ajax.reload();
+            tablesmt.ajax.reload();
         },
     });
 });

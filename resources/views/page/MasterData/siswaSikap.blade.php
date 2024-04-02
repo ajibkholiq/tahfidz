@@ -62,6 +62,10 @@
     <div id="modal" class="modal modal-large in" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span
+                            class="sr-only">Close</span></button>
+                </div>
                 <div class="modal-body">
                     <h4>Nilai Sikap</h4>
                     <div class="form-horizontal">
@@ -125,6 +129,10 @@
     <div id="modal-p" class="modal modal-large in" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span
+                            class="sr-only">Close</span></button>
+                </div>
                 <div class="modal-body">
                     <h4>Nilai Hafalan</h4>
                     <div class="form-horizontal">
@@ -190,7 +198,7 @@
         {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script> // export pdf --}}
         {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script> // export pdf --}}
         <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script> {{-- print --}}
-        {{-- <script src="{{ URL::asset('assets/modal.js') }}"></script> --}}
+        <script src="{{ URL::asset('assets/injs/siswasikap.js') }}"></script>
         <script>
             let table;
             document.addEventListener("DOMContentLoaded", function() {

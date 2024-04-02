@@ -66,16 +66,6 @@ class MenuSeeder extends Seeder
             'route' => 'tahun_pelajaran',
             'remark' => 'Master Tahun Pelajaran',
         ]);
-         adm_menu::create([
-            'induk' => 'Master Data',
-            'uuid' => uniqid(),
-            'kode_menu' => '',
-            'icon' => "",
-            'urut' => "",
-            'nama_menu' =>'Semester',
-            'route' => 'semester',
-            'remark' => 'Master Data Semester',
-        ]);
         adm_menu::create([
             'induk' => 'head',
             'uuid' => uniqid(),
@@ -93,28 +83,7 @@ class MenuSeeder extends Seeder
             'icon' => "",
             'urut' => "",
             'nama_menu' =>'Nilai',
-            'route' => '',
-            'remark' => 'Rekapan Data',
-        ]);
-        adm_menu::create([
-            'induk' => 'Nilai',
-            'uuid' => uniqid(),
-            'kode_menu' => '',
-            'icon' => "",
-            'urut' => "",
-            'nama_menu' =>'Kelas',
             'route' => 'kelas/nilai',
-            'remark' => 'Rekapan Data',
-        ]);
-
-        adm_menu::create([
-            'induk' => 'Nilai',
-            'uuid' => uniqid(),
-            'kode_menu' => '',
-            'icon' => "",
-            'urut' => "",
-            'nama_menu' =>'Siswa',
-            'route' =>  'nilai/siswa',
             'remark' => 'Rekapan Data',
         ]);
         adm_menu::create([
