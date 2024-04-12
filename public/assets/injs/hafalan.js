@@ -419,7 +419,6 @@ $("#scan").click(() => {
                     nama = code.data
                     url = $('#scan-qr').data('url');
                     siswa = nama.replace(url+"/capaian/",'');
-                    siswa = siswa.replace('_'," ");
                     manualShow(siswa);
                     stopScanning(true); // Stop scanning when QR code detected
                     // Do something with the QR code data

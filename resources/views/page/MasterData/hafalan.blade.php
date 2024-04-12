@@ -220,9 +220,8 @@
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <div class="col-sm-9 col-sm-offset-3" style="text-align: end">
-                                <button class="btn btn-primary" id="switch">Swicth Kamera</button>
-
-                                <button class="btn btn-primary" id="close">Close</button>
+                                <button class="btn btn-primary" id="switch">Ganti Kamera</button>
+                                <button class="btn btn-primary" id="close">Keluar</button>
 
                             </div>
                         </div>
