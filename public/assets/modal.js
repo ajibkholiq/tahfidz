@@ -136,7 +136,6 @@ let nama;
 
 $(document).on("click", "#bt-qrcode", function () {
     nama = $(this).data('nama');
-    nama = nama.replace(" ","_");
     nis = $(this).data('nis');
     url =$('#modal-qr').data('url');
     var container = document.getElementById("qrcode-img");

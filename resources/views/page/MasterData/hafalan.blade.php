@@ -137,7 +137,7 @@
                                                         <div id="output"></div>
                                                         <button class="btn btn-primary" id="start">Mulai Merekam</button>
                                                         <button class="btn btn-primary" id="stop" disabled>Berhenti Merekam </button>
-                                                        <button class="btn btn-primary" style ="display: none"id=" save">
+                                                        <button class="btn btn-primary" style ="display: none"id="save">
                             Save</button>
 
                     </div>
@@ -220,7 +220,8 @@
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <div class="col-sm-9 col-sm-offset-3" style="text-align: end">
-                                <button class="btn btn-primary" id="close">Close</button>
+                                <button class="btn btn-primary" id="switch">Ganti Kamera</button>
+                                <button class="btn btn-primary" id="close">Keluar</button>
 
                             </div>
                         </div>

@@ -75,4 +75,4 @@ Route::middleware('checklogin')->group(function () {
         Route::resource('pegawai', AdmUserController::class);
     });
 });
-
+Route::resource('/capaian', App\Http\Controllers\CapaianController::class);

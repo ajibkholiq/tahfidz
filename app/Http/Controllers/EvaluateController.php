@@ -93,9 +93,9 @@ class EvaluateController extends Controller
       $kelancaran = $this->levenshteinDistance($pembanding, $input);
       $tajwid = $this->cosineSimilarity($this->vectTajwid($pembanding), $this->vectTajwid($input));
       return [
-        'kefasihan' => intval($kefasihan * 88),
-        'kelancaran' => intval($kelancaran * 88),
-        'tajwid' => intval($tajwid * 88),
+        'kefasihan' => intval(50 +($kefasihan * 38)),
+        'kelancaran' => intval(50 + ($kelancaran * 38)),
+        'tajwid' => intval(50 + ($tajwid * 38)),
       ];
     }
 
