@@ -276,7 +276,7 @@ window.onload = function () {
                         const audioBlob = new Blob(audioChunks, {
                             type: "audio/wav",
                         });
-                        // text = speechToText(audioBlob); // dari open ai
+                        speechToText(audioBlob); // dari open ai
                         text = text.replace("بسم الله الرحمن الرحيم", "");
                         evaluasi($("#surat").val(), text, audioBlob);
                         text = "";
@@ -298,34 +298,31 @@ window.onload = function () {
             outputDiv.innerHTML = "";
             output.innerHTML = text;
 
-            $("#save").show();
             stopButton.disabled = true;
             startButton.disabled = false;
         };
     }
 };
 function speechToText(surat) {
-    let text;
     let formData = new FormData();
     formData.append("model", "whisper-1");
     formData.append("file", surat, "audio.wav");
     formData.append("language", "ar");
-
     $.ajax({
         url: "https://api.openai.com/v1/audio/transcriptions",
         type: "POST",
         headers: {
             Authorization:
-                "Bearer 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",
+                "Bearer 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",
         },
         data: formData,
         contentType: false,
         processData: false,
         success: (data) => {
-            text = data.text;
+            texts = data.text;
+            console.log(text);
         },
     });
-    return text;
 }
 // Function to send the recognized speech to server
 function evaluasi(surat, text, audio = null) {
@@ -350,6 +347,7 @@ function evaluasi(surat, text, audio = null) {
             $("#audio").attr("src", "audio/siswa/" + audioName);
             $("#audio").show();
             $("#nilai").show();
+            $("#save").show();
             toastr.success("Berhasil Mengevaluasi!", "Nilai Didapatkan");
         },
         error: function (xhr, status, error) {
@@ -443,90 +441,3 @@ $("#scan").click(() => {
             console.error("Error accessing the camera:", err);
         });
 });
-
-// $("#scan").click(() => {
-//     $("#scan-qr").modal("show");
-//     var scanning = true; // Variabel boolean untuk menandai pemindaian QR code
-//     var scanning = true; // Variabel boolean untuk menandai pemindaian QR code
-//     var video = document.getElementById("video");
-//     var cameraSelect = document.getElementById("cameraSelect");
-
-//     // Fungsi untuk mengubah kamera
-//     async function switchCamera() {
-//         const constraints = {
-//             video: {
-//                 facingMode: cameraSelect.value // Menggunakan nilai dari opsi terpilih
-//             }
-//         };
-
-//         // Dapatkan media dari kamera yang dipilih
-//         const stream = await navigator.mediaDevices.getUserMedia(constraints);
-
-//         // Atur sumber media video
-//         video.srcObject = stream;
-//     }
-
-//     // Panggil fungsi switchCamera() saat opsi kamera dipilih berubah
-//     cameraSelect.addEventListener('change', switchCamera);
-
-//     // Panggil switchCamera() untuk mengatur kamera default saat halaman dimuat
-//     switchCamera();
-
-//     navigator.mediaDevices
-//         .getUserMedia({ video: true })
-//         .then(function (stream) {
-//             var video = document.getElementById("video");
-//             video.srcObject = stream;
-//             video.play();
-
-//             var canvas = document.getElementById("canvas");
-//             var context = canvas.getContext("2d");
-
-//             // Function to stop scanning
-//             function stopScanning() {
-//                 scanning = false;
-//                 stream.getTracks().forEach((track) => track.stop()); // Stop video stream
-//                 context.clearRect(0, 0, canvas.width, canvas.height);
-//                 $("#scan-qr").modal("hide");
-
-//             }
-
-//             // Continuously scan for QR codes
-//             function scanQRCode() {
-//                 if (!scanning) return; // Stop scanning if scanning is false
-//                 context.drawImage(video, 0, 0, canvas.width, canvas.height);
-//                 var imageData = context.getImageData(
-//                     0,
-//                     0,
-//                     canvas.width,
-//                     canvas.height
-//                 );
-//                 var code = jsQR(
-//                     imageData.data,
-//                     imageData.width,
-//                     imageData.height
-//                 );
-//                 if (code) {
-//                     nama = code.data
-//                     url = $('#scan-qr').data('url');
-//                     siswa = nama.replace(url+"/capaian/",'');
-//                     siswa = siswa.replace('_'," ");
-//                     manualShow(siswa);
-//                     stopScanning(); // Stop scanning when QR code detected
-//                     // Do something with the QR code data
-//                 } else {
-//                     // If QR code not detected, continue scanning
-//                     requestAnimationFrame(scanQRCode);
-//                 }
-//             }
-
-//             // Start scanning
-//             scanQRCode();
-//             $("#close").click(() => {
-//                 stopScanning();
-//             });
-//         })
-//         .catch(function (err) {
-//             console.error("Error accessing the camera:", err);
-//         });
-// });

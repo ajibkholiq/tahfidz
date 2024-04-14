@@ -137,7 +137,7 @@
                                                         <div id="output"></div>
                                                         <button class="btn btn-primary" id="start">Mulai Merekam</button>
                                                         <button class="btn btn-primary" id="stop" disabled>Berhenti Merekam </button>
-                                                        <button class="btn btn-primary" style ="display: none"id=" save">
+                                                        <button class="btn btn-primary" style ="display: none"id="save">
                             Save</button>
 
                     </div>
