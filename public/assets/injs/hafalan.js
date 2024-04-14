@@ -319,8 +319,7 @@ function speechToText(surat) {
         contentType: false,
         processData: false,
         success: (data) => {
-            texts = data.text;
-            console.log(text);
+            text = data.text;
         },
     });
 }
@@ -351,7 +350,6 @@ function evaluasi(surat, text, audio = null) {
             toastr.success("Berhasil Mengevaluasi!", "Nilai Didapatkan");
         },
         error: function (xhr, status, error) {
-            console.error(xhr.responseText);
             toastr.error("Terjadi kesalahan saat mengirim data.", "Error");
         },
     });
