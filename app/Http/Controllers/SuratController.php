@@ -17,7 +17,6 @@ class SuratController extends Controller
         return view('page.MasterData.surat',compact(['menu','tingkat']));
         // return $tingkat;
     }
-
     function store(Request $request){
         if (!surat::create([
             'uuid' => uniqid(),
@@ -46,7 +45,7 @@ class SuratController extends Controller
             ]);
         return response()->json($data, 200);
     }
-   function show ($uuid){
+    function show ($uuid){
         return response()->json(surat::where('uuid',$uuid)->first(), 200);
     }
     function destroy($id){

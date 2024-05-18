@@ -10,9 +10,6 @@ use Illuminate\Support\Facades\Session;
 
 class AdmMenuController extends Controller
 {
-
-    
-
     function index (){
         $data = adm_menu::all();
         $menu = menu::getMenu(Session::get('role'));
@@ -20,7 +17,6 @@ class AdmMenuController extends Controller
         // return collect($data)->pluck('nama_menu')->toArray();
 
     }
-
     function store(Request $request){
         $data = adm_menu::create([
             'induk' => $request->induk,

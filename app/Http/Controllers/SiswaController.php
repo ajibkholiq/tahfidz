@@ -12,7 +12,7 @@ use App\Imports\SiswaImport;
 
 class SiswaController extends Controller
 {
-    function index($kelas){
+    function index(){
         $menu = menu::getMenu(Session::get('role'));
         $kelas = Kelas::all();
         return view('page.MasterData.siswa',compact(['menu','kelas']));
@@ -22,7 +22,7 @@ class SiswaController extends Controller
     }
     function store($kelas,Request $request){
         $kelasName = Kelas::where('kelas',$kelas)->first();
-    if (!Siswa::create([
+      if (!Siswa::create([
             'uuid' => uniqid(),
             'nama' => $request->nama,
             'nis' => $request->nis,
@@ -77,8 +77,7 @@ class SiswaController extends Controller
         }
         return response()->json(['fail' => 'siswa gagal dihapus', 'data' => $id]);
     }
-    function import(Request $request)
-    {
+    function import(Request $request){
         // Validasi file
         $request->validate([
             'file' => 'required|mimes:xls,xlsx'
@@ -95,9 +94,9 @@ class SiswaController extends Controller
     }
     function downloadTemplate(){
 
-    $file = storage_path('template/siswa.xlsx');
+     $file = storage_path('template/siswa.xlsx');
 
-    return response()->download($file);
+        return response()->download($file);
 }
     function naikKelas(Request $request){
         $asalKelas = $request->asal;

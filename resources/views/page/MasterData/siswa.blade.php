@@ -90,7 +90,7 @@
                             <div class="hr-line-dashed"></div>
                             <div class="form-group">
                                 <div class="col-sm-9 col-sm-offset-3" style="text-align: end">
-                                    <button id="naik-save" class="btn btn-primary">Save</button>
+                                    <button id="naik-save" class="btn btn-primary">Naik</button>
                                 </div>
                             </div>
                             </form>

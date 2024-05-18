@@ -20,7 +20,6 @@ class HafalanController extends Controller
         $tingkat = Kelas::all();
         return view('page.MasterData.hafalan',compact(['menu','tingkat']));
     }
-
     function store(Request $request){
         $suratId = surat::where('no_surat',$request->surat)->first();
         $siswaId = Siswa::where('nama',$request->siswa)->first();
@@ -73,13 +72,13 @@ class HafalanController extends Controller
         }
         return response()->json(["message" => "failed"], 200);
     }
-
     function getCapaian($kefasihan,$tajwid,$kelancaran){
-        if(($tajwid == "Kurang Baik" && $kefasihan == "Cukup Baik")|| ( $tajwid == "Cukup Baik" && $kefasihan == "Kurang Baik" && ($kelancaran == "Kurang Baik" || $kelancaran == "Cukup Baik"))|| ( $tajwid == "Kurang Baik" && $kefasihan == "Kurang Baik" && ($kelancaran == "Kurang Baik" || $kelancaran == "Cukup Baik")) ){
+        if(($tajwid == "Kurang Baik" && $kefasihan == "Cukup Baik")
+        ||( $tajwid == "Cukup Baik" && $kefasihan == "Kurang Baik" && ($kelancaran == "Kurang Baik" || $kelancaran == "Cukup Baik"))
+        ||( $tajwid == "Kurang Baik" && $kefasihan == "Kurang Baik" && ($kelancaran == "Kurang Baik" || $kelancaran == "Cukup Baik"))){
             return "Belum Tercapai";
         }
         else return "Tercapai";
-      
     }
     function getKategori($nilai){
         return $nilai >= 83.67 ? "Baik" : ($nilai <= 79.2 ? "Kurang Baik" : "Cukup Baik"); 

@@ -21,24 +21,23 @@ class AdmRoleMenu extends Controller
         // return $tesr;
     }
     function store(Request $request){
-    if ( $request->idRole != null && $request->idMenu != null){
-        foreach ($request->idRole as $role) {
-            adm_role_menu::where('role_id' ,$role)->delete();
-            foreach ( $request->idMenu as $menu) {
-                adm_role_menu::create([
-                    "uuid" => uniqid(),
-                    'role_id' => $role,
-                    'menu_id' => $menu,
-                    'create_by' => $request->session()->get('nama')
-                ] );
-                
+        if ( $request->idRole != null && $request->idMenu != null){
+            foreach ($request->idRole as $role) {
+                adm_role_menu::where('role_id' ,$role)->delete();
+                foreach ( $request->idMenu as $menu) {
+                    adm_role_menu::create([
+                        "uuid" => uniqid(),
+                        'role_id' => $role,
+                        'menu_id' => $menu,
+                        'create_by' => $request->session()->get('nama')
+                    ] );
+                    
+                }
             }
+            return redirect()->back()->with(['success' => 'menu untuk role telah dibuat!']);
         }
-        return redirect()->back()->with(['success' => 'menu untuk role telah dibuat!']);
+        else{
+            return redirect()->back()->with(['fail' => 'pilih minimal satu role dan satu menu!']);
+        }
     }
-    else{
-        return redirect()->back()->with(['fail' => 'pilih minimal satu role dan satu menu!']);
-    }
-    }
-
 }

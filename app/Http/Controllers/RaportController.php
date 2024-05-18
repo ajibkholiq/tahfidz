@@ -37,7 +37,6 @@ class RaportController extends Controller
         return response()->json(['data' => $hasilArray], 200);
 
     }
-
     function cetak($kelas){
         $tahun_ajar = pelajaran::where('status','AKTIF')->first();
         $semester = SMSTR::where('status','AKTIF')->first();
@@ -89,14 +88,13 @@ class RaportController extends Controller
                 }
             }
         }
-    }
+     }
     
         $outputFilePath = storage_path('app/public/Raport_'.$kelas.'_'.$semester->semester.'_'.$tahun_ajar->tahun_pelajaran.'.docx');
         $templateProcessor->saveAs($outputFilePath);
         return response()->download($outputFilePath)->deleteFileAfterSend(true);
     }
-
-   private function getDataRaport($kelas){
+    function getDataRaport($kelas){
     $tahun_ajar = pelajaran::where('status','AKTIF')->first();
     $semester = SMSTR::where('status','AKTIF')->first();
     $siswas = Siswa::join('kelas','id_kelas','kelas.id')
