@@ -5,42 +5,42 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Models\Siswa;
-class EvaluateController extends Controller
-{
+class EvaluateController extends Controller{
     function getEvaluasi(Request $request){
-    //   $request->validate([
-    //     'audio' => 'required|file|mimes:wav,mp3|max:20480', // Contoh untuk file audio WAV atau MP3 dengan ukuran maksimum 20MB
-    // ]);
-    
-    // Mengambil file audio dari request
+      //   $request->validate([
+      //     'audio' => 'required|file|mimes:wav,mp3|max:20480', // Contoh untuk file audio WAV atau MP3 dengan ukuran maksimum 20MB
+      // ]);
       
-    $text = $request->text;
-    $audio = $request->file('audio');
-    $no_surat = $request->no_surat;
-    $siswa = Siswa::where('nama',$request->siswa)->first();
-    $audioName = $siswa->nama."_".$no_surat.'.'.$audio->getClientOriginalExtension();
-    // Menyimpan file audio ke folder public/audio (pastikan folder sudah ada dan writable)
-    $audioPath = $audio->move(public_path('audio/siswa'), $audioName);
-    
-        $suratPembanding = $this->replaceHarkat($this->getAyat($no_surat));
-        $suratClient = $this->addHarakat($text);
-        // $suratClient = $suratPembanding;
-        return response()->json([
-            "status"=> "success",
-            "data" => [
-            "nilai" => $this->evaluasi($suratPembanding, $suratClient),
-            "surat" => [ "pembanding" => $suratPembanding ,"input" => $suratClient],
-            "tajwid" => ["pembanding" => $this->vectTajwid($suratPembanding), "input"=> $this->vectTajwid($suratClient)],
-            "audio" => $audioName,
-            ]
-        ], 200);
+      // Mengambil file audio dari request
+        
+          $text = $request->text;
+          $audio = $request->file('audio');
+          $no_surat = $request->no_surat;
+          $siswa = Siswa::where('nama',$request->siswa)->first();
+          $audioName = $siswa->nama."_".$no_surat.'.'.$audio->getClientOriginalExtension();
+          // Menyimpan file audio ke folder public/audio (pastikan folder sudah ada dan writable)
+          $audioPath = $audio->move(public_path('audio/siswa'), $audioName);
+          
+          $suratPembanding = $this->replaceHarkat($this->getAyat($no_surat));
+          $suratClient = $this->addHarakat($text);
+              return response()->json([
+                  "status"=> "success",
+                  "data" => [
+                  "nilai" => $this->evaluasi($suratPembanding, $suratClient),
+                  "surat" => [ "pembanding" => $suratPembanding ,"input" => $suratClient],
+                  "tajwid" => ["pembanding" => $this->vectTajwid($suratPembanding), "input"=> $this->vectTajwid($suratClient)],
+                  "huruf" =>["pembanding" => $this->getVector($suratPembanding), "input" => $this->getVector($suratClient)],
+                  "audio" => $audioName,
+                  ]
+              ], 200);
     }
-
     // mehapus tanda tidak diperlukan 
     function replaceHarkat($str){
-     return preg_replace('/[\x{0600}-\x{061F}\x{067A}-\x{08FF}]/u','', $str); 
+       return preg_replace('/[\x{0600}-\x{061F}\x{067A}-\x{08FF}]/u','', $str); 
     }
-
+    function deleteharakat($str){
+      return preg_replace('/[\x{0600}-\x{061F}\x{064b}-\x{08FF}]/u','', $str);
+    }
     //menambahkan harakat dari user dengan memakai api 
     function addHarakat($surat){
       try {
@@ -86,19 +86,17 @@ class EvaluateController extends Controller
         }
 
     }
-
     // evaluasi 
     function evaluasi($pembanding, $input) {
-      $kefasihan = $this->cosineSimilarity($this->getVector($pembanding), $this->getVector($input));
-      $kelancaran = $this->levenshteinDistance($pembanding, $input);
+      $kefasihan = $this->cosineSimilarity($this->getVector(($this->deleteharakat($pembanding))), $this->getVector(($this->deleteharakat($input))));
+      $kelancaran = $this->levenshteinDistance($this->deleteharakat($pembanding),$this->deleteharakat( $input));
       $tajwid = $this->cosineSimilarity($this->vectTajwid($pembanding), $this->vectTajwid($input));
       return [
-        'kefasihan' => intval(50 +($kefasihan * 38)),
-        'kelancaran' => intval(50 + ($kelancaran * 38)),
-        'tajwid' => intval(50 + ($tajwid * 38)),
+        'kefasihan' => intval($kefasihan * 88),
+        'kelancaran' => intval($kelancaran * 88),
+        'tajwid' => intval($tajwid * 88),
       ];
     }
-
     // untuk mendapatkan vektor string
     function getVector($str) {
       $vec = [];
@@ -112,7 +110,6 @@ class EvaluateController extends Controller
       }
       return $vec;
     }
-
     // untuk mendapatkan vektor tajwid
     function vectTajwid($string) {
       //hukum dengan harokat
@@ -129,6 +126,7 @@ class EvaluateController extends Controller
         'gunnah' => '/(نّ|مّ)/u',
         'qolqolah' => '/(بْ|جْ|دْ|طْ|قْ)/u'
       ];
+    
       $tajwid = [];
       foreach ($hukumTajwidHarakat as $key => $pattern) {
         preg_match_all($pattern, $string, $matches);
@@ -136,7 +134,6 @@ class EvaluateController extends Controller
       }
       return $tajwid;
     }
-
     // algoritma levenshtein Distance
     function levenshteinDistance($str1, $str2) {
       $len1 = mb_strlen($str1, 'UTF-8');
@@ -160,9 +157,8 @@ class EvaluateController extends Controller
           );
         }
       }
-      return ($len1 - $matrix[$len1][$len2]/4) / $len1;
+      return ($len1 - ($matrix[$len1][$len2]/6)) / $len1;
     }
-
     // algoritma Cosine Similarity
     function cosineSimilarity($vec1, $vec2) {
       $dotProduct = 0;

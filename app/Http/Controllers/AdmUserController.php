@@ -21,7 +21,7 @@ class AdmUserController extends Controller
         $menu = menu::getMenu(Session::get('role'));
         return view('page.AdmUser.index',compact('menu','role'));
     }
-     function store(Request $request){
+    function store(Request $request){
         $data = User::create([
         'uuid' => uniqid(),
         'nama' => $request->nama,
@@ -45,11 +45,9 @@ class AdmUserController extends Controller
         return redirect()->back()->with('success','User Behasil ditambahkan');
         
     }
-
     function show ($uuid){
         return response()->json(User::where('uuid',$uuid)->first(), 200,);
     }
-
     function update($id, Request $request){
         $data = User::where('uuid',$id)->update([
             'nama' => $request->nama,
@@ -65,8 +63,7 @@ class AdmUserController extends Controller
          return response()->json(['success' => 'data gagal dirubah', 'data'=> $data]);
 
     }
-
-     function destroy($id){
+    function destroy($id){
         $data = User::where('uuid',$id)->first();
         File::delete('assets/img/user/'.$data->foto);
         $data->delete();
@@ -76,7 +73,6 @@ class AdmUserController extends Controller
         return response()->json(['fail' => 'Unit gagal dihapus', 'data' => $id]);
 
     }
-
     function updateUser($id, Request $request){
         $data = User::where('uuid',$id)->update([
             'nama' => $request->nama,
@@ -106,7 +102,7 @@ class AdmUserController extends Controller
             return redirect()->back()->with('fail','gagal Gagal diubah');
         }
     }
-    public function updatePhoto($id, Request $request)
+    function updatePhoto($id, Request $request)
     {
         // Validasi bahwa file yang diunggah adalah foto (opsional, jika diperlukan)
         $request->validate([

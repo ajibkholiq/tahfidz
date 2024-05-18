@@ -1,59 +1,59 @@
-let siswa, kelas, table,tableNilai, audioName;
-    document.addEventListener("DOMContentLoaded", function () {
-        tableNilai = new DataTable("#data-nilai", {
-            dom: "ftpl",
-            processing: false,
-            ordering: true,
-            lengthMenu: [
-                [10, 25, 50, -1],
-                [10, 25, 50, "All"],
-            ],
-            language: {
-                emptyTable:
-                    "Tidak ada data! pastikan semester dan tahun pelajaran ada yang aktif",
+let siswa, kelas, table, tableNilai, audioName;
+document.addEventListener("DOMContentLoaded", function () {
+    tableNilai = new DataTable("#data-nilai", {
+        dom: "ftpl",
+        processing: false,
+        ordering: true,
+        lengthMenu: [
+            [10, 25, 50, -1],
+            [10, 25, 50, "All"],
+        ],
+        language: {
+            emptyTable:
+                "Tidak ada data! pastikan semester dan tahun pelajaran ada yang aktif",
+        },
+        ajax: {
+            url: "/api/nilai",
+            type: "GET",
+        },
+        columns: [
+            {
+                title: "No",
+                data: null,
+                render: function (data, type, row, meta) {
+                    return meta.row + 1; // Mengembalikan nomor baris, dimulai dari 1
+                },
             },
-            ajax: {
-                url: "/api/nilai",
-                type: "GET",
+            {
+                title: "Nama",
+                data: "nama",
             },
-            columns: [
-                {
-                    title: "No",
-                    data: null,
-                    render: function (data, type, row, meta) {
-                        return meta.row + 1; // Mengembalikan nomor baris, dimulai dari 1
-                    },
-                },
-                {
-                    title: "Nama",
-                    data: "nama",
-                },
-                {
-                    title: "Kelas",
-                    data: "kelas",
-                },
-                {
-                    title: "Surat",
-                    data: "surat",
-                },
-                {
-                    title: "Kefasihan",
-                    data: "kefasihan",
-                },
-                {
-                    title: "Tajwid",
-                    data: "tajwid",
-                },
-                {
-                    title: "Kelancaran",
-                    data: "kelancaran",
-                },
-                {
-                    title: "Capaian",
-                    data: "capaian",
-                },
-            ],
-        });
+            {
+                title: "Kelas",
+                data: "kelas",
+            },
+            {
+                title: "Surat",
+                data: "surat",
+            },
+            {
+                title: "Kefasihan",
+                data: "kefasihan",
+            },
+            {
+                title: "Tajwid",
+                data: "tajwid",
+            },
+            {
+                title: "Kelancaran",
+                data: "kelancaran",
+            },
+            {
+                title: "Capaian",
+                data: "capaian",
+            },
+        ],
+    });
     table = new DataTable("#data-table", {
         dom: "ftpl",
         columnDefs: [
@@ -95,7 +95,6 @@ let siswa, kelas, table,tableNilai, audioName;
             { title: "NIS", data: "nis" },
             { title: "Nama", data: "nama" },
             { title: "Kelas", data: "kelas" },
-           
         ],
     });
     $.ajax({
@@ -123,7 +122,7 @@ $("body").on("click", "#auto", function () {
     $("#modal-dengar").modal("show");
 });
 $("body").on("click", "#manual", function () {
-    siswa = $(this).data("namaa")
+    siswa = $(this).data("namaa");
     manualShow(siswa);
 });
 function manualShow(sis) {
@@ -133,16 +132,15 @@ function manualShow(sis) {
 }
 $("#kelas").on("change", () => {
     kls = $("#kelas").val();
-    if (kls == ""){
+    if (kls == "") {
         url = "/api/getSiswa";
-        nl = "/api/nilai"
-    }
-    else {
+        nl = "/api/nilai";
+    } else {
         url = "/api/siswa/kelas/" + kls;
         nl = "/api/nilai/" + kls;
     }
     table.ajax.url(url).load();
-    tableNilai.ajax.url(nl).load()
+    tableNilai.ajax.url(nl).load();
 
     $.ajax({
         url: "/api/getsurat/" + kls,
@@ -209,6 +207,7 @@ $("#save-manual").on("click", () => {
         },
     });
 });
+let text = "";
 
 window.onload = function () {
     const startButton = document.getElementById("start");
@@ -217,7 +216,6 @@ window.onload = function () {
     const output = document.getElementById("text");
 
     let mediaRecorder;
-    let text = "";
     let audioChunks = [];
     if (!("webkitSpeechRecognition" in window)) {
         outputDiv.innerHTML =
@@ -276,9 +274,7 @@ window.onload = function () {
                         const audioBlob = new Blob(audioChunks, {
                             type: "audio/wav",
                         });
-                        speechToText(audioBlob); // dari open ai
-                        text = text.replace("بسم الله الرحمن الرحيم", "");
-                        evaluasi($("#surat").val(), text, audioBlob);
+                        getEval(audioBlob); 
                         text = "";
                     });
                     startButton.disabled = true;
@@ -303,26 +299,40 @@ window.onload = function () {
         };
     }
 };
+async function getEval(audio) {
+    text = await speechToText(audio); // Menunggu hasil speechToText
+    const newText = text.replace("بسم الله الرحمن الرحيم", "");
+    evaluasi($("#surat").val(), newText, audio);
+}
+
 function speechToText(surat) {
-    let formData = new FormData();
-    formData.append("model", "whisper-1");
-    formData.append("file", surat, "audio.wav");
-    formData.append("language", "ar");
-    $.ajax({
-        url: "https://api.openai.com/v1/audio/transcriptions",
-        type: "POST",
-        headers: {
-            Authorization:
-                "Bearer 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",
-        },
-        data: formData,
-        contentType: false,
-        processData: false,
-        success: (data) => {
-            text = data.text;
-        },
+    return new Promise((resolve, reject) => {
+        let formData = new FormData();
+        formData.append("model", "whisper-1");
+        formData.append("file", surat, "audio.wav");
+        formData.append("language", "ar");
+        $.ajax({
+            url: "https://api.openai.com/v1/audio/transcriptions",
+            type: "POST",
+            headers: {
+                Authorization:
+                    "Bearer sk-proj-bimzd9v3x7Ts9BQkVQ4WT3BlbkFJTsLUcBEhK5FQFCje2eQx",
+            },
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: (data) => {
+                text = data.text;
+                resolve(text); // Resolves the promise with the text
+            },
+            error: (err) => {
+                resolve(text);
+                reject(err); // Rejects the promise if there's an error
+            },
+        });
     });
 }
+
 // Function to send the recognized speech to server
 function evaluasi(surat, text, audio = null) {
     let formData = new FormData();
@@ -361,7 +371,8 @@ $("#scan").click(() => {
     var canvas = document.getElementById("canvas");
     var switchCameraBtn = document.getElementById("switch");
 
-    navigator.mediaDevices.getUserMedia({ video: true })
+    navigator.mediaDevices
+        .getUserMedia({ video: true })
         .then(function (stream) {
             video.srcObject = stream;
             video.play();
@@ -379,12 +390,16 @@ $("#scan").click(() => {
             // Function to switch camera
             function switchCamera() {
                 stopScanning(false); // Stop current scanning
-                const facingMode = video.srcObject.getVideoTracks()[0].getSettings().facingMode;
-                const newFacingMode = facingMode === "user" ? "environment" : "user"; // Toggle between "user" and "environment"
+                const facingMode = video.srcObject
+                    .getVideoTracks()[0]
+                    .getSettings().facingMode;
+                const newFacingMode =
+                    facingMode === "user" ? "environment" : "user"; // Toggle between "user" and "environment"
                 const constraints = {
-                    video: { facingMode: newFacingMode }
+                    video: { facingMode: newFacingMode },
                 };
-                navigator.mediaDevices.getUserMedia(constraints)
+                navigator.mediaDevices
+                    .getUserMedia(constraints)
                     .then(function (newStream) {
                         video.srcObject = newStream;
                         video.play();
@@ -412,9 +427,9 @@ $("#scan").click(() => {
                     imageData.height
                 );
                 if (code) {
-                    nama = code.data
-                    url = $('#scan-qr').data('url');
-                    siswa = nama.replace(url+"/capaian/",'');
+                    nama = code.data;
+                    url = $("#scan-qr").data("url");
+                    siswa = nama.replace(url + "/capaian/", "");
                     manualShow(siswa);
                     stopScanning(true); // Stop scanning when QR code detected
                     // Do something with the QR code data

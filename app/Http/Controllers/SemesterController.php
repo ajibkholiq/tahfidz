@@ -9,7 +9,7 @@ use Session;
 
 class SemesterController extends Controller
 {
-        function index(){
+    function index(){
         $menu = menu::getMenu(Session::get('role'));
        
         return view('page.MasterData.semester',compact(['menu']));

@@ -10,29 +10,13 @@ use Illuminate\Http\Request;
 
 class Adm_RoleController extends Controller
 {
-//     private function getHeadMenu()
-// {
-//     // Kode Anda untuk mendapatkan menu kepala (head menu)
-//     // Misalnya:
-//     $menu = adm_role::select('kode_menu', 'nama_menu', 'route')
-//         ->where('induk', 'head')
-//         ->orderBy('kode_menu', 'asc')
-//         ->get();
-
-//     return $menu;
-// }    
-
-    
-public function index()
-{
+public function index(){
     $menu = menu::getMenu(Session::get('role'));
     $adm_roles = adm_role::get();
     return view('page.adm_role.index', compact('adm_roles','menu'));
     // return $adm_roles;
 }
-
-    public function store(Request $request)
-    {
+public function store(Request $request){
         // $request->validate([
         //     'uuid' => 'required|unique:adm_role|max:20',
         //     'nama_role' => 'required',
@@ -58,14 +42,13 @@ public function index()
        }else{
        return redirect()->back()->with('success','Menu Behasil ditambahkan');
        }
-    }
-
-   function show($id){
+}
+function show($id){
         return response()->json(adm_role::where('uuid',$id)->first(), 200);
     }
 
     public function update(Request $request, $adm_role) 
-{
+    {
     $data = adm_role::where('uuid',$adm_role)->update([
        
         'nama_role' => $request->nama,
@@ -86,10 +69,7 @@ public function index()
         ]);
     }
 }
-
-
-public function destroy($id)
-{
+public function destroy($id){
     $data = adm_role::where('uuid', $id)->delete();
 
     if ($data) {
@@ -100,5 +80,5 @@ public function destroy($id)
             }
         
         }
-    }
+}
 }
