@@ -28,11 +28,7 @@ class loginController extends Controller
             Session::put('role', $user->role);
             Session::put('nama', $user->nama);
             Session::put('photo', $user->foto);
-            $url = $request->session()->get('_previous')['url']; 
-            if($url != url('login')){
             return redirect('/dashboard');
-            }   
-            return redirect($url);
             // return Session::get('role');
         }
         return redirect()->back()->with('fail' , 'password salah!');
