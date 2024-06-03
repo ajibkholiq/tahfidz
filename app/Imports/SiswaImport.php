@@ -23,6 +23,11 @@ class SiswaImport implements ToModel, WithStartRow
     }
     public function model(array $row)
     {
+        \Log::info($row);
+        
+        if (empty($row[3])) {
+            return null; // Skip row if 'nama' is empty
+        }
         return new Siswa([
             'uuid' => uniqid(),
             'nama' => $row[3],
