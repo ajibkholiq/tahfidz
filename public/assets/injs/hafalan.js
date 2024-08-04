@@ -316,7 +316,7 @@ function speechToText(surat) {
             type: "POST",
             headers: {
                 Authorization:
-                    "Bearer sk-proj-bimzd9v3x7Ts9BQkVQ4WT3BlbkFJTsLUcBEhK5FQFCje2eQx",
+                    "Bearer sk-proj-J3tlzCnqqPmlI3LCNaYtT3BlbkFJNvEBsBmrHHDrnJV54PZK",
             },
             data: formData,
             contentType: false,

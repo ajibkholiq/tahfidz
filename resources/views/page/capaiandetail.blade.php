@@ -74,14 +74,15 @@
                                                 </tr>
                                             </thead>
                                             @php
-                                                function getKategori($nilai)
+                                                 function getKategori($nilai)
                                                 {
                                                     return $nilai >= 83.67
-                                                        ? 'Sangat Baik'
+                                                        ? 'Baik'
                                                         : ($nilai <= 79.2
-                                                            ? 'Cukup Baik'
-                                                            : 'Baik');
+                                                            ? 'Kurang Baik'
+                                                            : 'Cukup');
                                                 }
+
 
                                             @endphp
                                             <tbody>

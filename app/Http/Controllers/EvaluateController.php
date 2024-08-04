@@ -28,8 +28,8 @@ class EvaluateController extends Controller{
                   "data" => [
                   "nilai" => $this->evaluasi($suratPembanding, $suratClient),
                   "surat" => [ "pembanding" => $suratPembanding ,"input" => $suratClient],
-                  "tajwid" => ["pembanding" => $this->vectTajwid($suratPembanding), "input"=> $this->vectTajwid($suratClient)],
-                  "huruf" =>["pembanding" => $this->getVector($suratPembanding), "input" => $this->getVector($suratClient)],
+                //  "tajwid" => ["pembanding" => $this->vectTajwid($suratPembanding), "input"=> $this->vectTajwid($suratClient)],
+                 // "huruf" =>["pembanding" => $this->getVector($suratPembanding), "input" => $this->getVector($suratClient)],
                   "audio" => $audioName,
                   ]
               ], 200);
